@@ -1,0 +1,69 @@
+name: .NET CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+          cache: true
+          cache-dependency-path: |
+            webapi-demo.csproj
+            global.json
+            NuGet.Config
+
+      - name: Restore dependencies
+        run: dotnet restore webapi-demo.csproj
+
+      - name: Build
+        run: dotnet build webapi-demo.csproj --configuration Release --no-restore
+
+      - name: Test
+        shell: bash
+        run: |
+          shopt -s globstar nullglob
+          test_projects=(**/*Tests.csproj **/*Test.csproj)
+
+          if [ ${#test_projects[@]} -eq 0 ]; then
+            echo "No test projects found. Skipping tests."
+            exit 0
+          fi
+
+          for project in "${test_projects[@]}"; do
+            echo "Running tests for $project"
+            dotnet test "$project" --configuration Release --no-build --verbosity normal
+          done
+
+      - name: Publish application
+        run: dotnet publish webapi-demo.csproj --configuration Release --no-build --output ./publish
+
+      - name: Upload published artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapi-demo-publish
+          path: ./publish
