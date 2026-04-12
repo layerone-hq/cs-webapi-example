@@ -42,14 +42,14 @@ jobs:
             tests/webapi-demo.Tests/webapi-demo.Tests.csproj
 
       - name: Restore dependencies
-        run: dotnet restore webapi-demo.sln
+        run: dotnet restore webapi-demo.slnx
 
       - name: Build
-        run: dotnet build webapi-demo.sln --configuration Release --no-restore
+        run: dotnet build webapi-demo.slnx --configuration Release --no-restore
 
       - name: Test with coverage
         run: |
-          dotnet test webapi-demo.sln \
+          dotnet test webapi-demo.slnx \
             --configuration Release \
             --no-build \
             --collect:"XPlat Code Coverage" \
