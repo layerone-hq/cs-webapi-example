@@ -1,0 +1,28 @@
+version = 1
+
+[[analyzers]]
+name = "csharp"
+enabled = true
+
+exclude_patterns = [
+  "bin/**",
+  "obj/**",
+  "**/Migrations/**",
+  "**/*.Designer.cs",
+  "**/*.g.cs",
+  "**/*.g.i.cs"
+]
+
+test_patterns = [
+  "tests/**/*.cs",
+  "**/*.Tests.cs",
+  "**/*Tests.cs"
+]
+
+[[transformers]]
+name = "dotnet-test"
+enabled = true
+
+[[code_formatters]]
+name = "dotnet-format"
+enabled = true
