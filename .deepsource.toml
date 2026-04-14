@@ -32,4 +32,4 @@ enabled = true
 
 [[code_formatters]]
 name = "dotnet-format"
-enabled = true
+enabled = false
