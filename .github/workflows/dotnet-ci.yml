@@ -52,6 +52,7 @@ jobs:
             --configuration Release \
             --no-build \
             --collect:"XPlat Code Coverage" \
+            --settings coverlet.runsettings \
             --logger:"console;verbosity=detailed" \
             --results-directory ./TestResults
 
