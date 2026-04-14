@@ -19,6 +19,13 @@ test_patterns = [
   "**/*Tests.cs"
 ]
 
+[[analyzers]]
+name = "dependency-audit"
+enabled = true
+
+  [analyzers.meta]
+  dependency_file_paths = ["packages.lock.json"]
+
 [[transformers]]
 name = "dotnet-test"
 enabled = true
