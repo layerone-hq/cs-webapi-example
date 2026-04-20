@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using webapi_demo.Controllers;
-using webapi_demo.DTO;
-using webapi_demo.Interfaces;
-using webapi_demo.Models;
+using WebApiDemo.Application.DTOs;
+using WebApiDemo.Application.Interfaces;
+using WebApiDemo.Domain.Entities;
+using WebApiDemo.WebAPI.Controllers;
 using Xunit;
 
 namespace webapi_demo.Tests;
@@ -135,30 +135,18 @@ public class TodoControllerTests
     private sealed class FakeToDoService : IToDoService
     {
         public IEnumerable<ToDoItem> GetAllResult { get; init; } = Array.Empty<ToDoItem>();
-
         public ToDoItem? GetByIdResult { get; init; }
-
         public ToDoItem AddResult { get; init; } = new();
-
         public ToDoItem? UpdateResult { get; init; }
-
         public ToDoItem? DeleteResult { get; init; }
-
         public int? PatchCalledWithId { get; private set; }
-
         public JsonPatchDocument<ToDoItem>? PatchCalledWithDocument { get; private set; }
 
-        public Task<IEnumerable<ToDoItem>> GetAllAsync()
-            => Task.FromResult(GetAllResult);
-
-        public Task<ToDoItem?> GetByIdAsync(int id)
-            => Task.FromResult(GetByIdResult);
-
-        public Task<ToDoItem> AddAsync(ToDoItem newItem)
-            => Task.FromResult(AddResult);
-
-        public Task<ToDoItem?> UpdateAsync(int id, ToDoItem updatedItem)
-            => Task.FromResult(UpdateResult);
+        public Task<IEnumerable<ToDoItem>> GetAllAsync() => Task.FromResult(GetAllResult);
+        public Task<ToDoItem?> GetByIdAsync(int id) => Task.FromResult(GetByIdResult);
+        public Task<ToDoItem> AddAsync(ToDoItem newItem) => Task.FromResult(AddResult);
+        public Task<ToDoItem?> UpdateAsync(int id, ToDoItem updatedItem) => Task.FromResult(UpdateResult);
+        public Task<ToDoItem?> DeleteAsync(int id) => Task.FromResult(DeleteResult);
 
         public Task PatchAsync(int id, JsonPatchDocument<ToDoItem> patchDoc)
         {
@@ -166,8 +154,5 @@ public class TodoControllerTests
             PatchCalledWithDocument = patchDoc;
             return Task.CompletedTask;
         }
-
-        public Task<ToDoItem?> DeleteAsync(int id)
-            => Task.FromResult(DeleteResult);
     }
 }

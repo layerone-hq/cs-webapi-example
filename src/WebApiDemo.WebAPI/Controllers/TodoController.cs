@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using webapi_demo.DTO;
-using webapi_demo.Interfaces;
-using webapi_demo.Models;
+using WebApiDemo.Application.DTOs;
+using WebApiDemo.Application.Interfaces;
+using WebApiDemo.Domain.Entities;
 
-namespace webapi_demo.Controllers;
+namespace WebApiDemo.WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -22,15 +22,14 @@ public class TodoController : ControllerBase
     {
         var items = await _toDoService.GetAllAsync();
         if (!items.Any()) return NoContent();
-        var itemDTO = items.Select(MapToToDoItemDTO).ToList();
-        return Ok(itemDTO);
+        return Ok(items.Select(MapToDTO).ToList());
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetToDoItemById(int id)
     {
         var item = await _toDoService.GetByIdAsync(id);
-        return (item == null) ? NotFound() : Ok(MapToToDoItemDTO(item));
+        return item == null ? NotFound() : Ok(MapToDTO(item));
     }
 
     [HttpPost]
@@ -39,33 +38,26 @@ public class TodoController : ControllerBase
         if (newItemDto == null) return BadRequest();
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var item = new ToDoItem()
+        var item = await _toDoService.AddAsync(new ToDoItem
         {
             Title = newItemDto.Title,
             IsComplete = newItemDto.IsComplete
-        };
-
-        item = await _toDoService.AddAsync(item);
-        var itemDto = MapToToDoItemDTO(item);
-        return CreatedAtAction(nameof(GetToDoItemById), new {id = item.Id}, itemDto);
+        });
+        return CreatedAtAction(nameof(GetToDoItemById), new { id = item.Id }, MapToDTO(item));
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateToDoItem(int id, [FromBody] ToDoItemDTO updateItemDto)
     {
-
         if (updateItemDto == null) return BadRequest();
-
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var item = new ToDoItem()
+        var item = await _toDoService.UpdateAsync(id, new ToDoItem
         {
             Title = updateItemDto.Title,
             IsComplete = updateItemDto.IsComplete
-        };
-
-        item = await _toDoService.UpdateAsync(id, item);
-        return (item == null) ? NotFound() : Ok(MapToToDoItemDTO(item));
+        });
+        return item == null ? NotFound() : Ok(MapToDTO(item));
     }
 
     [HttpPatch("{id}")]
@@ -79,16 +71,13 @@ public class TodoController : ControllerBase
     public async Task<IActionResult> DeleteToDoItem(int id)
     {
         var item = await _toDoService.DeleteAsync(id);
-        return (item == null) ? NotFound() : Ok(MapToToDoItemDTO(item));
+        return item == null ? NotFound() : Ok(MapToDTO(item));
     }
 
-    private ToDoItemDTO MapToToDoItemDTO(ToDoItem item)
+    private static ToDoItemDTO MapToDTO(ToDoItem item) => new()
     {
-        return new ToDoItemDTO
-        {
-            Id = item.Id,
-            Title = item.Title,
-            IsComplete = item.IsComplete,
-        };
-    }
+        Id = item.Id,
+        Title = item.Title,
+        IsComplete = item.IsComplete
+    };
 }

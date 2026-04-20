@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-namespace webapi_demo.DTO;
+
+namespace WebApiDemo.Application.DTOs;
 
 public class ToDoItemDTO
 {

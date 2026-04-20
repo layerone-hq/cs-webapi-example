@@ -11,7 +11,7 @@ ASP.NET Core Web API built with `.NET 10` and `SQLite`.
 
 ```bash
 dotnet restore
-dotnet run --project webapi-demo.csproj
+dotnet run --project src/WebApiDemo.WebAPI/WebApiDemo.WebAPI.csproj
 ```
 
 The API will be available at:
