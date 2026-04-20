@@ -67,8 +67,8 @@ docker compose down
 
 The GitHub Actions pipeline:
 
-- restores the project
+- restores the solution in locked mode
 - builds in `Release`
-- runs tests if `*Test.csproj` or `*Tests.csproj` projects exist
+- runs tests with code coverage
 - publishes the application artifacts
 - builds the Docker image
