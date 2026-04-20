@@ -35,7 +35,7 @@ jobs:
           dotnet-version: 10.0.x
           cache: true
           cache-dependency-path: |
-            webapi-demo.csproj
+            src/WebApiDemo.WebAPI/WebApiDemo.WebAPI.csproj
             global.json
             NuGet.Config
             tests/webapi-demo.Tests/webapi-demo.Tests.csproj
@@ -85,7 +85,7 @@ jobs:
         run: ./bin/deepsource report --analyzer test-coverage --key csharp --value-file ${{ env.COVERAGE_FILE }}
 
       - name: Publish application
-        run: dotnet publish webapi-demo.csproj --configuration Release --no-build --output ./publish
+        run: dotnet publish src/WebApiDemo.WebAPI/WebApiDemo.WebAPI.csproj --configuration Release --no-build --output ./publish
 
   build-docker-image:
     runs-on: ubuntu-latest

@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
-using webapi_demo.Data;
-using webapi_demo.Models;
-using webapi_demo.Services;
+using WebApiDemo.Application.Services;
+using WebApiDemo.Domain.Entities;
+using WebApiDemo.Infrastructure.Persistence;
+using WebApiDemo.Infrastructure.Repositories;
 using Xunit;
 
 namespace webapi_demo.Tests;
@@ -20,7 +21,8 @@ public class ToDoServiceTests : IDisposable
             .Options;
 
         _context = new ToDoDbContext(options);
-        _service = new ToDoService(_context, NullLogger<ToDoService>.Instance);
+        var repository = new ToDoRepository(_context);
+        _service = new ToDoService(repository, NullLogger<ToDoService>.Instance);
     }
 
     public void Dispose()

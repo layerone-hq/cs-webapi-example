@@ -397,15 +397,34 @@
           "xunit.v3.runner.common": "[3.2.2]"
         }
       },
-      "webapi-demo": {
+      "webapidemo.application": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.AspNetCore.JsonPatch": "[10.0.5, )",
+          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[10.0.5, )",
+          "WebApiDemo.Domain": "[1.0.0, )"
+        }
+      },
+      "webapidemo.domain": {
+        "type": "Project"
+      },
+      "webapidemo.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "[10.0.5, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[10.0.5, )",
+          "WebApiDemo.Domain": "[1.0.0, )"
+        }
+      },
+      "webapidemo.webapi": {
         "type": "Project",
         "dependencies": {
           "Microsoft.AspNetCore.JsonPatch": "[10.0.5, )",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[10.0.5, )",
           "Microsoft.AspNetCore.OpenApi": "[10.0.5, )",
-          "Microsoft.EntityFrameworkCore": "[10.0.5, )",
-          "Microsoft.EntityFrameworkCore.Sqlite": "[10.0.5, )",
-          "Scalar.AspNetCore": "[2.13.22, )"
+          "Scalar.AspNetCore": "[2.13.22, )",
+          "WebApiDemo.Application": "[1.0.0, )",
+          "WebApiDemo.Infrastructure": "[1.0.0, )"
         }
       }
     }

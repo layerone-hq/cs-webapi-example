@@ -5,7 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\webapi-demo.csproj" />
+    <ProjectReference Include="..\..\src\WebApiDemo.Domain\WebApiDemo.Domain.csproj" />
+    <ProjectReference Include="..\..\src\WebApiDemo.Application\WebApiDemo.Application.csproj" />
+    <ProjectReference Include="..\..\src\WebApiDemo.Infrastructure\WebApiDemo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\WebApiDemo.WebAPI\WebApiDemo.WebAPI.csproj" />
   </ItemGroup>
 
 </Project>
