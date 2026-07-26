@@ -74,12 +74,14 @@ jobs:
         if: steps.find-coverage.outcome == 'success'
         with:
           name: webapi-demo-coverage
-          path: ${{ env.COVERAGE_FILE }}
+          path: ${{ env.COVERAGE_FILE }}s
 
       - name: Install DeepSource CLI
+        if: false
         run: curl -fsSL https://cli.deepsource.com/install | BINDIR=./bin sh
 
       - name: Report coverage to DeepSource
+        if: false
         env:
           DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
         run: ./bin/deepsource report --analyzer test-coverage --key csharp --value-file ${{ env.COVERAGE_FILE }}
