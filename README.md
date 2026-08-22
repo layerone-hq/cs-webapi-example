@@ -70,5 +70,4 @@ The GitHub Actions pipeline:
 - restores the solution in locked mode
 - builds in `Release`
 - runs tests with code coverage
-- publishes the application artifacts
 - builds the Docker image
